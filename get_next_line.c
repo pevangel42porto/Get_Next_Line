@@ -5,116 +5,100 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pevangel < pevangel@student.42porto.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/30 15:48:41 by pevangel          #+#    #+#             */
-/*   Updated: 2023/10/31 18:34:13 by pevangel         ###   ########.fr       */
+/*   Created: 2023/11/04 18:24:31 by pevangel          #+#    #+#             */
+/*   Updated: 2023/11/04 18:29:49 by pevangel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*ft_read_buffer(int fd, char *str)
+char	*ft_size_buffer(int fd, char *str)
 {
 	char	*buffer;
-	int		read_bytes;
+	int		rd_bytes;
 
-	buffer = (char *)malloc(BUFFER_SIZE + 1);
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
-		return (0);
-	read_bytes = 1;
-	while (!ft_strchr(str, '\n'))
+		return (NULL);
+	rd_bytes = 1;
+	while (!ft_strchr(str, '\n') && rd_bytes != 0)
 	{
-		read_bytes = read(fd, buffer, BUFFER_SIZE);
-		if (read_bytes == -1)
+		rd_bytes = read(fd, buffer, BUFFER_SIZE);
+		if (rd_bytes == -1)
 		{
 			free(buffer);
 			return (NULL);
 		}
-		buffer[read_bytes] = '\0';
+		buffer[rd_bytes] = '\0';
 		str = ft_strjoin(str, buffer);
 	}
-		free (buffer);
-		return (str);
-	
+	free(buffer);
+	return (str);
 }
-
-static char	*ft_get_line(char *str)
+char	*ft_new_line(char *str)
 {
-	int	i;
-	char	*line;
+	int		i;
+	char	*join_str;
 
 	i = 0;
-	if (!str)
+	if (!str[i])
 		return (NULL);
 	while (str[i] && str[i] != '\n')
 		i++;
-	if (str[i] == '\n')
-		i++;
-	line = malloc(sizeof(char *) * (i + 1));
-	if (!line)
+	join_str = (char *)malloc(sizeof(char) * (i + 2));
+	if (!join_str)
 		return (NULL);
 	i = 0;
 	while (str[i] && str[i] != '\n')
 	{
-		line[i] = str[i];
+		join_str[i] = str[i];
 		i++;
 	}
 	if (str[i] == '\n')
 	{
-		line[i] = str[i];
+		join_str[i] = str[i];
 		i++;
 	}
-	line[i] = '\0';
-	return (line);
+	join_str[i] = '\0';
+	return (join_str);
 }
-
-static char	*ft_new_str(char *str)
+char	*ft_new_str(char *str)
 {
-	char	*new_str;
-	int	i;
+	int		i;
+	int		j;
+	char	*join_str;
 
 	i = 0;
 	while (str[i] && str[i] != '\n')
 		i++;
-	if (str[i] == '\0')
+	if (!str[i])
 	{
 		free(str);
 		return (NULL);
 	}
-	new_str = malloc(sizeof(char *) * (ft_strlen(str) - (i + 1)));
-	i = 0;
-	while (str[i] && str[i] != '\n')
-	{
-		new_str[i] = str[i];
-		i++;
-	}
-	new_str[i] = '\0';
-	return (new_str);
+	join_str = (char *)malloc(sizeof(char) * (ft_strlen(str) - i + 1));
+	if (!join_str)
+		return (NULL);
+	i++;
+	j = 0;
+	while (str[i])
+		join_str[j++] = str[i++];
+	join_str[j] = '\0';
+	free(str);
+	return (join_str);
 }
 
 char	*get_next_line(int fd)
 {
+	char		*line;
 	static char	*str;
-	char	*line;
-	
+
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (0);
-	str = ft_read_buffer(fd, str);
+	str = ft_size_buffer(fd, str);
 	if (!str)
 		return (NULL);
-	line = ft_get_line(str);
+	line = ft_new_line(str);
 	str = ft_new_str(str);
 	return (line);
-}
-#include <fcntl.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-
-int	main()
-{
-	int	fd = open("test.txt", O_RDONLY);
-	char *test;
-	test = get_next_line(fd);
-	printf("%s\n", test);
-	return 0;
 }

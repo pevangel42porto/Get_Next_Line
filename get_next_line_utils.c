@@ -5,59 +5,68 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: pevangel < pevangel@student.42porto.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/30 15:48:38 by pevangel          #+#    #+#             */
-/*   Updated: 2023/10/31 18:29:31 by pevangel         ###   ########.fr       */
+/*   Created: 2023/11/04 18:25:10 by pevangel          #+#    #+#             */
+/*   Updated: 2023/11/04 18:29:43 by pevangel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char	*ft_strchr(char *str, char c)
+size_t	ft_strlen(char *s)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
-	while (str[i] != c)
-	{
-		if(str[i] == '\0')
-			return (NULL);
-		i++;
-	}
-	return (str);
-}
-
-size_t	ft_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
+	if (!s)
+		return (0);
+	while (s[i] != '\0')
 		i++;
 	return (i);
 }
 
-char	*ft_strjoin(char *str_first, char *str_second)
+char	*ft_strchr(char *s, int c)
 {
-	char	*str;
 	int	i;
-	int	j;
 
 	i = 0;
-	j = 0;
-	if (!str_first)
-		return (NULL);
-	if (!str_second)
-		return (str_first);
-	str = (char *)malloc(ft_strlen(str_first) + ft_strlen(str_second) + 1);
-	if (!str)
-		return (NULL);
-	while (str_first[i])
-		str[i++] = str_first[j++];
-	j = 0;
-	while (str_second[j])
-		str[i++] = str_second[j++];
-	str[i] = '\0';
-	free(str_first);
-	free(str_second);
-	return (str);
+	if (!s)
+		return (0);
+	if (c == '\0')
+		return ((char *)&s[ft_strlen(s)]);
+	while (s[i] != '\0')
+	{
+		if (s[i] == (char) c)
+			return ((char *)&s[i]);
+		i++;
+	}
+	return (0);
 }
+
+char	*ft_strjoin(char *str, char *buffer)
+{
+	size_t	i;
+	size_t	j;
+	char	*join_str;
+
+	if (!str)
+	{
+		str = (char *)malloc(1 * sizeof(char));
+		str[0] = '\0';
+	}
+	if (!str || !buffer)
+		return (NULL);
+	join_str = malloc(sizeof(char) * ((ft_strlen(str) + ft_strlen(buffer)) + 1));
+	if (join_str == NULL)
+		return (NULL);
+	i = -1;
+	j = 0;
+	if (str)
+		while (str[++i] != '\0')
+			join_str[i] = str[i];
+	while (buffer[j] != '\0')
+		join_str[i++] = buffer[j++];
+	join_str[ft_strlen(str) + ft_strlen(buffer)] = '\0';
+	free(str);
+	return (join_str);
+}
+
