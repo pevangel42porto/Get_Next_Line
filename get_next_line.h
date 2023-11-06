@@ -6,7 +6,7 @@
 /*   By: pevangel < pevangel@student.42porto.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 18:26:47 by pevangel          #+#    #+#             */
-/*   Updated: 2023/11/04 18:30:40 by pevangel         ###   ########.fr       */
+/*   Updated: 2023/11/06 12:27:03 by pevangel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,10 @@
 # endif
 
 char	*get_next_line(int fd);
-char	*ft_strchr(char *s, int c);
-char	*ft_strjoin(char *str, char *buffer);
+int		ft_strchr(char *s, char c);
+char	*ft_strjoin(char *str1, char *str2);
 size_t	ft_strlen(char *str);
+
 
 
 #endif

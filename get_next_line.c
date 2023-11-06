@@ -6,30 +6,33 @@
 /*   By: pevangel < pevangel@student.42porto.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 18:24:31 by pevangel          #+#    #+#             */
-/*   Updated: 2023/11/04 18:29:49 by pevangel         ###   ########.fr       */
+/*   Updated: 2023/11/06 12:26:57 by pevangel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
+
 char	*ft_size_buffer(int fd, char *str)
 {
 	char	*buffer;
-	int		rd_bytes;
+	int		read_bytes;
 
-	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char)); // coloquei (char *)
 	if (!buffer)
 		return (NULL);
-	rd_bytes = 1;
-	while (!ft_strchr(str, '\n') && rd_bytes != 0)
+	read_bytes = 1;
+	while (!ft_strchr(str, '\n') && read_bytes > 0)
 	{
-		rd_bytes = read(fd, buffer, BUFFER_SIZE);
-		if (rd_bytes == -1)
+		read_bytes = read(fd, buffer, BUFFER_SIZE);
+		if (read_bytes < 0)
 		{
+			if(str)
+				free(str);
 			free(buffer);
 			return (NULL);
 		}
-		buffer[rd_bytes] = '\0';
+		buffer[read_bytes] = '\0';
 		str = ft_strjoin(str, buffer);
 	}
 	free(buffer);
@@ -45,7 +48,7 @@ char	*ft_new_line(char *str)
 		return (NULL);
 	while (str[i] && str[i] != '\n')
 		i++;
-	join_str = (char *)malloc(sizeof(char) * (i + 2));
+	join_str = malloc((i + 2) * sizeof(char));
 	if (!join_str)
 		return (NULL);
 	i = 0;
@@ -71,12 +74,12 @@ char	*ft_new_str(char *str)
 	i = 0;
 	while (str[i] && str[i] != '\n')
 		i++;
-	if (!str[i])
+	if (str[i] == '\0')
 	{
 		free(str);
 		return (NULL);
 	}
-	join_str = (char *)malloc(sizeof(char) * (ft_strlen(str) - i + 1));
+	join_str = malloc(ft_strlen(str) - i + 1 * sizeof(char));
 	if (!join_str)
 		return (NULL);
 	i++;
