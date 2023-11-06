@@ -6,12 +6,11 @@
 /*   By: pevangel < pevangel@student.42porto.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 18:25:10 by pevangel          #+#    #+#             */
-/*   Updated: 2023/11/06 12:37:57 by pevangel         ###   ########.fr       */
+/*   Updated: 2023/11/06 12:51:58 by pevangel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
 
 size_t	ft_strlen(char *s)
 {
@@ -25,14 +24,13 @@ size_t	ft_strlen(char *s)
 	return (i);
 }
 
-int	ft_strchr(char *str, char c) 
+int	ft_strchr(char *str, char c)
 {
 	int	i;
 
 	i = 0;
 	if (!str)
 		return (0);
-	
 	while (str[i] != '\0')
 	{
 		if (str[i] == c)
@@ -48,7 +46,7 @@ char	*ft_strjoin(char *str, char *buffer)
 	size_t	size;
 	int		i;
 	int		j;
-	
+
 	size = ft_strlen(str) + ft_strlen(buffer);
 	str_join = malloc((size + 1) * sizeof(char));
 	if (!str_join)
@@ -66,4 +64,3 @@ char	*ft_strjoin(char *str, char *buffer)
 	free(str);
 	return (str_join);
 }
-

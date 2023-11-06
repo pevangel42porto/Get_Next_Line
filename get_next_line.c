@@ -6,19 +6,18 @@
 /*   By: pevangel < pevangel@student.42porto.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/04 18:24:31 by pevangel          #+#    #+#             */
-/*   Updated: 2023/11/06 12:26:57 by pevangel         ###   ########.fr       */
+/*   Updated: 2023/11/06 12:45:31 by pevangel         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
 
 char	*ft_size_buffer(int fd, char *str)
 {
 	char	*buffer;
 	int		read_bytes;
 
-	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char)); // coloquei (char *)
+	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 	if (!buffer)
 		return (NULL);
 	read_bytes = 1;
@@ -27,7 +26,7 @@ char	*ft_size_buffer(int fd, char *str)
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		if (read_bytes < 0)
 		{
-			if(str)
+			if (str)
 				free(str);
 			free(buffer);
 			return (NULL);
@@ -38,6 +37,7 @@ char	*ft_size_buffer(int fd, char *str)
 	free(buffer);
 	return (str);
 }
+
 char	*ft_new_line(char *str)
 {
 	int		i;
@@ -65,6 +65,7 @@ char	*ft_new_line(char *str)
 	join_str[i] = '\0';
 	return (join_str);
 }
+
 char	*ft_new_str(char *str)
 {
 	int		i;
